@@ -1,21 +1,43 @@
-import Stack from "@mui/material/Stack";
+import FilterPanel from "./FilterAndSortPanel";
 import SearchBar from "./SearchBar";
-import FilterPanel from "./FilterPanel";
+import { Typography } from "@mui/material";
+import { SortByValues } from "../constants";
 
-export default function HeaderBar() {
+type HeaderBarProps = {
+  sourceList: string[];
+  selectedSources: string[];
+  sortBy: string;
+  handleSearch: (query: string) => void;
+  handleSourceFilterUpdate: (selectedSources: string[]) => void;
+  handleSortChange: (sort: SortByValues) => void;
+  handleReset: () => void;
+};
+
+export default function HeaderBar({
+  sourceList = [],
+  selectedSources = [],
+  sortBy = SortByValues.LATEST,
+  handleSearch,
+  handleSourceFilterUpdate,
+  handleSortChange,
+  handleReset,
+}: HeaderBarProps) {
   return (
-    <Stack
-      className="header"
-      direction="row"
-      spacing={2}
-      sx={{
-        justifyContent: "space-evenly",
-        alignItems: "center",
-      }}
-    >
-      <h2 className="Title">News Aggregator</h2>
-      <SearchBar></SearchBar>
-      <FilterPanel></FilterPanel>
-    </Stack>
+    <div className="header">
+      <div className="title-search">
+        <div className="title">
+          <h2>News Aggregator</h2>
+        </div>
+        <SearchBar handleSearch={handleSearch} />
+      </div>
+      <FilterPanel
+        sourceList={sourceList}
+        selectedSources={selectedSources}
+        sortBy={sortBy}
+        onSourceFilterUpdate={handleSourceFilterUpdate}
+        onSortChange={handleSortChange}
+        onReset={handleReset}
+      />
+    </div>
   );
 }

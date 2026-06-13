@@ -1,13 +1,19 @@
-import Stack from '@mui/material/Stack';
-import NewsCard from './NewsCard';
+import Stack from "@mui/material/Stack";
+import NewsCard from "./NewsCard";
+import type { NewsItem } from "../types/NewsAggregator";
 
-export default function NewsPanel() {
+type NewsPanelProps = {
+  newsItems: NewsItem[];
+};
+
+export default function NewsPanel({ newsItems = [] }: NewsPanelProps) {
+  const newsCards = newsItems.map((newsItem) => (
+    <NewsCard newsItem={newsItem} key={newsItem.id} />
+  ));
   return (
     <div>
-      <Stack direction="row" spacing={2}>
-        <NewsCard></NewsCard>
-        <NewsCard></NewsCard>
-        <NewsCard></NewsCard>
+      <Stack direction="column" spacing={2}>
+        {newsCards}
       </Stack>
     </div>
   );

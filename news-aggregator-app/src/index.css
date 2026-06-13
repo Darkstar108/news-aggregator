@@ -1,6 +1,7 @@
 :root {
-  --text: #ffffff;
+  --text: #000000;
   --text-h: #08060d;
+  --accent-text: #ffffff;
   --bg: #fff;
   --border: #000000;
   --accent: rgb(233,1,48);

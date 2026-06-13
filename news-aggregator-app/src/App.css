@@ -1,29 +1,68 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
-
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+html, body {
+  margin: 0;
+  padding: 0;
 }
 
 .header {
-  background: var(--accent-bg);
+  width: 100%;
+  color: var(--accent-text);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 1px 10px 2px rgba(0,0,0,0.3);
 }
 
-.searchBar {
-  margin: 10px 0px;
+.title h2 {
+  height: 100%;
+  color: var(--accent);
+  padding-top: 10px;
 }
+
+.title-search {
+  display: flex;
+  padding: 10px 20px;
+  height: 50px;
+}
+
+.title {
+  width: 20%;
+  padding: 0 4vw;
+}
+
+.search-bar {
+  margin: 10px 0px;
+  width: 80%;
+  padding: 0 10vw
+}
+
+.filter-sort {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 10vw;
+}
+
+.filter {
+  height: 80%;
+  width: 50%;
+}
+
+.sort {
+  width: 25%;
+  padding: 10px;
+}
+
+.reset-button {
+  width: 25%;
+}
+
+.news-card {
+  text-align: left;
+}
+
+.dashboard-content {
+  background: var(--bg);
+  margin: 1% 5% 0%;
+}
+
 
 .body {
   background: var(--bg);
