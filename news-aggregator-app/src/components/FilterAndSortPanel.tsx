@@ -71,9 +71,9 @@ export default function FilterAndSortPanel({
         className="reset-button"
         variant="contained"
         onClick={onReset}
-        sx={{ width: "20%" }}
+        sx={{ width: "15%", height: 50 }}
       >
-        Reset
+        Reset Filters
       </Button>
     </div>
   );

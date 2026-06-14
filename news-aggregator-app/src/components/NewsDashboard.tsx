@@ -13,7 +13,6 @@ export default function NewsDashboard() {
     SortByValues.LATEST,
   );
   const [selectedSources, setSelectedSources] = useState<string[]>([]);
-  const [errorMessage, setErrorMessage] = useState<string>("");
 
   async function handleSearch(query: string) {
     setDashboardState("loading");
@@ -22,7 +21,6 @@ export default function NewsDashboard() {
       setNewsResponse(response);
     } catch {
       setDashboardState("error");
-      setErrorMessage("Error");
     } finally {
       setDashboardState("results");
     }
@@ -84,7 +82,6 @@ export default function NewsDashboard() {
       <DashboardContent
         dashboardState={dashboardState}
         newsItems={filteredAndSortedNewsItems}
-        error={errorMessage}
       />
     </div>
   );

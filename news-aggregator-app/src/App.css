@@ -63,6 +63,14 @@ html, body {
   margin: 1% 5% 0%;
 }
 
+.information-panel img {
+  width: 20vw;
+  object-fit: cover;
+}
+
+#search-bar-textfield-helper-text {
+  margin-top: 0px;
+}
 
 .body {
   background: var(--bg);

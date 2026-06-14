@@ -1,7 +1,10 @@
+import { Box } from "@mui/material";
+import { OrbitProgress } from "react-loading-indicators";
+
 export default function LoadingPanel() {
   return (
-    <div>
-      <p>Loading...</p>
-    </div>
+    <Box className="loading-panel" sx={{ marginTop: "5%" }}>
+      <OrbitProgress dense color="#32cd32" size="large" text="" textColor="" />
+    </Box>
   );
 }

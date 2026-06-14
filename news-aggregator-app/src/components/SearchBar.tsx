@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton } from "@mui/material";
-import { Height } from "@mui/icons-material";
+import { SEARCH_HELPER_TEXT } from "../constants";
 
 type SearchBarProps = {
   handleSearch: (query: string) => void;
@@ -10,11 +10,17 @@ type SearchBarProps = {
 
 export default function SearchBar({ handleSearch }: SearchBarProps) {
   const [query, setQuery] = useState("");
+  const [isInvalidQueryFlag, setIsInvalidQueryFlag] = useState(false);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      handleSearch(query);
-      console.log("Submitted value:", query);
+      console.log("Submitted query:", query);
+      if (query.length < 2 || query.length > 50) {
+        setIsInvalidQueryFlag(true);
+      } else {
+        setIsInvalidQueryFlag(false);
+        handleSearch(query);
+      }
     }
   };
 
@@ -29,6 +35,8 @@ export default function SearchBar({ handleSearch }: SearchBarProps) {
         fullWidth
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
+        error={isInvalidQueryFlag}
+        helperText={isInvalidQueryFlag ? SEARCH_HELPER_TEXT : ""}
         sx={{ height: 10 }}
         slotProps={{
           input: {
