@@ -111,7 +111,8 @@ pnpm-debug.log*
 # Docker local artifacts (optional; keep templates committed)
 .docker/
 
-# Requested explicit ignores (root-level)
+# Agent ignores
 .slingshot/
+.agent/
 
 # End of .gitignore
