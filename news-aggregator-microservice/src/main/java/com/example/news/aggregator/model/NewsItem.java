@@ -34,6 +34,8 @@ public class NewsItem {
     public String publishedAt;
     @Schema(description = "Sentiment of article", example = "POSITIVE")
     public Sentiment sentiment;
+    @Schema(description = "Sentiment score of article", example = "5.0")
+    public Double sentimentScore;
     @Schema(description = "Source credibility of article", example = "HIGH")
     public SourceCredibility sourceCredibility;
 }

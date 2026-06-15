@@ -29,6 +29,7 @@
 		<java.version>21</java.version>
 		<lombok>1.18.46</lombok>
 		<mapstruct>1.6.3</mapstruct>
+		<snakeyaml>2.6</snakeyaml>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -61,6 +62,11 @@
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
 			<version>${mapstruct}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>${snakeyaml}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
