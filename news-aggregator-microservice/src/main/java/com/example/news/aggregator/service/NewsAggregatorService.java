@@ -1,6 +1,7 @@
 package com.example.news.aggregator.service;
 
 import com.example.news.aggregator.client.NewsApiClient;
+import com.example.news.aggregator.mapper.NewsAggregatorResponseMapper;
 import com.example.news.aggregator.model.NewsAggregatorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,10 @@ public class NewsAggregatorService {
         "NewsApiClient: response fetched with status: {} and totalResults: {}",
         newsApiResponse.status,
         newsApiResponse.totalResults);
-    return null;
+    var newsAggregatorResponse =
+        NewsAggregatorResponse.builder()
+            .newsItems(NewsAggregatorResponseMapper.INSTANCE.mapToNewsItems(newsApiResponse.articles))
+            .build();
+    return newsAggregatorResponse;
   }
 }
