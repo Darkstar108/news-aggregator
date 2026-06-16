@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NewsAggregatorResponse {
     public List<NewsItem> newsItems;
-    public List<String> souceList;
+    public List<String> sourceList;
     public List<String> alerts;
     @Schema(description = "Source Diversity score", example = "0.0")
     public Double sourceDiversityScore;

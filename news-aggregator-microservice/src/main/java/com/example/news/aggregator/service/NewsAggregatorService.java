@@ -68,7 +68,7 @@ public class NewsAggregatorService {
         breakingNewsFlag = true;
       }
     }
-    newsAggregatorResponse.setSouceList(sourceCounts.keySet().stream().toList());
+    newsAggregatorResponse.setSourceList(sourceCounts.keySet().stream().toList());
     newsAggregatorResponse.setSourceDiversityScore(analyseSourceDiversity(newsAggregatorResponse));
     setAlerts(
         newsAggregatorResponse, positiveArticlesCount, negativeArticlesCount, breakingNewsFlag);
