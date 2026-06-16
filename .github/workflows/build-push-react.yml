@@ -1,19 +1,18 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+# This workflow will build a React project with npm
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Build Java Microservice and push to ACR
+name: Build React App and push to ACR
 
 on:
   workflow_dispatch:
   push:
     branches: [ "main" ]
     paths:
-      - 'news-aggregator-microservice/**'
+      - 'news-aggregator-app/**'
 env:
   ACR_LOGIN_SERVER: 'newsaggregator.azurecr.io'
   IMAGE_NAME: 'news-aggregator-microservice' 
@@ -38,25 +37,16 @@ jobs:
       with:
         images: ${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}
         
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        cache: maven
-
-    - name: Run unit tests
-      run: mvn -B test -f ./news-aggregator-microservice/pom.xml
-        
-    - name: Build with Maven
-      run: mvn clean package -f ./news-aggregator-microservice/pom.xml -DskipTests
+    - name: Build with npm
+      run: npm run build
+      working-directory: ./news-aggregator-app/
         
     - name: Build and push Docker image
       id: push
       uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
       with:
-        context: .
-        file: ./news-aggregator-microservice/Dockerfile
+        context: ./news-aggregator-app/
+        file: ./news-aggregator-app/Dockerfile
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
