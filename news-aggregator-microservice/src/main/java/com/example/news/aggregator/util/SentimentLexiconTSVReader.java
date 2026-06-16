@@ -4,20 +4,24 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import java.util.HashMap;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SentimentLexiconTSVReader {
-  public static final String SENTIMENT_LEXICON_FILE_NAME = "src/main/resources/AFINN.tsv";
 
   public static HashMap<String, Double> getSentimentLexiconMap() {
     var sentimentLexiconMap = new HashMap<String, Double>();
     try {
-      BufferedReader TSVReader = new BufferedReader(new FileReader(SENTIMENT_LEXICON_FILE_NAME));
-      String line = TSVReader.readLine();
+      InputStream inputStream =
+          SentimentLexiconTSVReader.class.getClassLoader().getResourceAsStream("AFINN.tsv");
+      if (inputStream == null) {
+        throw new FileNotFoundException();
+      }
+      BufferedReader TSVReader = new BufferedReader(new InputStreamReader(inputStream));
+      TSVReader.readLine();
+      String line;
       line = TSVReader.readLine();
       while (line != null) {
         String[] lineItems = line.split("\t");
@@ -27,6 +31,7 @@ public class SentimentLexiconTSVReader {
       TSVReader.close();
     } catch (Exception e) {
       log.atError().setCause(e).log("Error reading SentimentLexiconTSVFile");
+      throw new RuntimeException(e);
     }
     return sentimentLexiconMap;
   }
