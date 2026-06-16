@@ -38,12 +38,6 @@ dist/
 storybook-static/
 .next/
 
-# Environment files (keep templates checked in separately)
-.env
-.env.*
-.env.local
-.env.*.local
-
 # Java / Spring / Build tools
 # Maven
 target/

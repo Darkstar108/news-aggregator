@@ -14,21 +14,20 @@ import org.yaml.snakeyaml.Yaml;
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class YamlReaderUtil {
-
-    public static final String SOURCE_CREDIBILITY_YAML = "src/main/resources/source-credibility.yaml";
-
     public static Map<String, String> getSourceCredibilityMap() {
-        Map<String, String> sourceCredibilityMap = null;
         try {
             Yaml yaml = new Yaml();
-            InputStream inputStream = new FileInputStream(SOURCE_CREDIBILITY_YAML);
+          InputStream inputStream =
+                  YamlReaderUtil.class
+                          .getClassLoader()
+                          .getResourceAsStream(
+                                  "source-credibility.yaml"
+                          );
 
-            // Map the root structure of the YAML into a generic Java Map
-            sourceCredibilityMap = yaml.load(inputStream);
-
-        } catch (FileNotFoundException e) {
+            return yaml.load(inputStream);
+        } catch (Exception e) {
             log.atError().setCause(e).log("Error reading SourceCredibility yaml");
+            throw new RuntimeException(e);
         }
-        return sourceCredibilityMap;
     }
 }
