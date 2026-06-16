@@ -20,7 +20,7 @@ export default function NewsCard({ newsItem }: NewsCardProps) {
     } else if (label == Sentiment.NEGATIVE || label == SourceCredibility.LOW) {
       return "error";
     } else if (label == SourceCredibility.MEDIUM) {
-      return "error";
+      return "warning";
     }
     return "default";
   }
