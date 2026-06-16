@@ -46,17 +46,20 @@ jobs:
         cache: maven
 
     - name: Run unit tests
-      run: mvn -B test -f ./news-aggregator-microservice/pom.xml
+      run: mvn -B test
+      working-directory: ./news-aggregator-microservice
         
     - name: Build with Maven
-      run: mvn clean package -f ./news-aggregator-microservice/pom.xml -DskipTests
+      run: mvn clean package -DskipTests
+      working-directory: ./news-aggregator-microservice
         
     - name: Build and push Docker image
       id: push
       uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
       with:
         context: .
-        file: ./news-aggregator-microservice/Dockerfile
+        file: /Dockerfile
+        working-directory: ./news-aggregator-microservice
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
