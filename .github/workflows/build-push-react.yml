@@ -37,6 +37,10 @@ jobs:
       with:
         images: ${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}
         
+    - name: Install dependencies
+      run: npm install
+      working-directory: ./news-aggregator-app/
+        
     - name: Build with npm
       run: npm run build
       working-directory: ./news-aggregator-app/
