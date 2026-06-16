@@ -33,7 +33,7 @@ export default function FilterAndSortPanel({
         options={sourceList}
         getOptionLabel={(option) => option}
         value={selectedSources}
-        onChange={(event: any, updatedSourceSelection: string[]) => {
+        onChange={(_event: any, updatedSourceSelection: string[]) => {
           onSourceFilterUpdate(updatedSourceSelection);
         }}
         filterSelectedOptions

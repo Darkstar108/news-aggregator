@@ -3,6 +3,14 @@ export const EMPTY_RESULTS_MESSAGE = "No results found for your search query, pl
 export const ERROR_MESSAGE = "Sorry for the unexpected error, please try again later";
 export const SEARCH_HELPER_TEXT = "Search query must be at least 2 characters and at most 50 characters";
 
+const DataFreshnessIndicator = {
+  LIVE: "LIVE",
+  CACHED: "CACHED",
+  MOCKED: "MOCKED",
+} as const;
+type DataFreshnessIndicator = (typeof DataFreshnessIndicator)[keyof typeof DataFreshnessIndicator];
+export { DataFreshnessIndicator };
+
 const SourceCredibility = {
   HIGH: "HIGH",
   MEDIUM: "MEDIUM",

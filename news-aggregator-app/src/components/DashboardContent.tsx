@@ -14,11 +14,13 @@ import emptyResultsImage from "../assets/empty-results-image.png";
 type DashboardContentProps = {
   dashboardState: DashboardState;
   newsItems: NewsItem[];
+  alerts: string[];
 };
 
 export default function DashboardContent({
   dashboardState,
   newsItems = [],
+  alerts = [],
 }: DashboardContentProps) {
   return (
     <div className="dashboard-content">
@@ -39,8 +41,12 @@ export default function DashboardContent({
         />
       )}
 
-      {(dashboardState === "results" || dashboardState === "degraded") && (
-        <ResultsPanel dashboardState={dashboardState} newsItems={newsItems} />
+      {(dashboardState === "results" || dashboardState === "cached") && (
+        <ResultsPanel
+          dashboardState={dashboardState}
+          newsItems={newsItems}
+          alerts={alerts}
+        />
       )}
     </div>
   );
