@@ -1,5 +1,6 @@
 package com.example.news.aggregator.model;
 
+import com.example.news.aggregator.constant.DataFreshnessIndicator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
@@ -21,4 +22,5 @@ public class NewsAggregatorResponse {
     public List<String> alerts;
     @Schema(description = "Source Diversity score", example = "0.0")
     public Double sourceDiversityScore;
+    public DataFreshnessIndicator dataFreshnessIndicator;
 }

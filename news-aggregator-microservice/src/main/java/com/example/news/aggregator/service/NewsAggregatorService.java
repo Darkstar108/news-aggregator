@@ -2,6 +2,7 @@ package com.example.news.aggregator.service;
 
 import com.example.news.aggregator.client.NewsApiClient;
 import com.example.news.aggregator.constant.Constants;
+import com.example.news.aggregator.constant.DataFreshnessIndicator;
 import com.example.news.aggregator.constant.Sentiment;
 import com.example.news.aggregator.mapper.NewsAggregatorResponseMapper;
 import com.example.news.aggregator.model.NewsAggregatorResponse;
@@ -11,12 +12,12 @@ import com.example.news.aggregator.service.strategy.SourceCredibilityAnalysisStr
 import com.example.news.aggregator.util.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -27,10 +28,17 @@ public class NewsAggregatorService {
   private final NewsApiClient newsApiClient;
   private final SentimentAnalysisStrategy sentimentAnalysisStrategy;
   private final SourceCredibilityAnalysisStrategy sourceCredibilityAnalysisStrategy;
+  private final CacheManager cacheManager;
   private final Map<String, Integer> sourceCounts = new HashMap<>();
 
   public NewsAggregatorResponse fetchNews(String query) {
     log.atInfo().log("Service: fetchNews called with query: {}", query);
+    var cachedResponse = fetchResponseFromCache(query);
+    if (cachedResponse != null) {
+      cachedResponse.setDataFreshnessIndicator(DataFreshnessIndicator.CACHED);
+      log.atInfo().log("Service: fetchNews returned cachedResponse");
+      return cachedResponse;
+    }
     var newsApiResponse = newsApiClient.fetchNews(query);
     log.atInfo().log(
         "NewsApiClient: response fetched with status: {} and totalResults: {}",
@@ -55,7 +63,8 @@ public class NewsAggregatorService {
       } else if (newsItem.sentiment == Sentiment.NEGATIVE) {
         negativeArticlesCount++;
       }
-      if (LocalDateTime.parse(newsItem.publishedAt).isAfter(LocalDateTime.now().minusHours(12))) {
+      if (LocalDateTime.parse(newsItem.publishedAt.substring(0, 19))
+          .isAfter(LocalDateTime.now().minusHours(4))) {
         breakingNewsFlag = true;
       }
     }
@@ -63,12 +72,29 @@ public class NewsAggregatorService {
     newsAggregatorResponse.setSourceDiversityScore(analyseSourceDiversity(newsAggregatorResponse));
     setAlerts(
         newsAggregatorResponse, positiveArticlesCount, negativeArticlesCount, breakingNewsFlag);
+    setResponseInCache(query, newsAggregatorResponse);
+    newsAggregatorResponse.setDataFreshnessIndicator(DataFreshnessIndicator.LIVE);
     return newsAggregatorResponse;
   }
 
   private void analyseNewsItem(NewsItem newsItem) {
     sentimentAnalysisStrategy.analyse(newsItem);
     sourceCredibilityAnalysisStrategy.analyse(newsItem);
+  }
+
+  private NewsAggregatorResponse fetchResponseFromCache(String query) {
+    var cache = cacheManager.getCache(Constants.CACHE_NAME);
+    if (cache != null && cache.get(query) != null) {
+      return cache.get(query, NewsAggregatorResponse.class);
+    }
+    return null;
+  }
+
+  private void setResponseInCache(String query, NewsAggregatorResponse newsAggregatorResponse) {
+    var cache = cacheManager.getCache(Constants.CACHE_NAME);
+    if (cache != null) {
+      cache.put(query, newsAggregatorResponse);
+    }
   }
 
   // Use Shannon-Wiener Index: (H = -\sum p_{i} \ln(p_{i})\) to calculate diversity. Greater than
