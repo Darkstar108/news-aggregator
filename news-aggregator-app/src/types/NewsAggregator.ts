@@ -11,7 +11,7 @@ export interface NewsResponse {
     sourceList: string[],
     alerts?: string[],
     sourceDiversityScore?: number
-    degraded?: boolean
+    dataFreshnessIndicator?: boolean
 }
 
 export interface NewsItem {
