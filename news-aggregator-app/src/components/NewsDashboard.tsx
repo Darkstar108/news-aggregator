@@ -3,7 +3,7 @@ import type { DashboardState, NewsResponse } from "../types/NewsAggregator";
 import DashboardContent from "./DashboardContent";
 import { fetchNews } from "../services/NewsApi";
 import HeaderBar from "./HeaderBar";
-import { SortByValues } from "../constants";
+import { SortByValues, DataFreshnessIndicator } from "../constants";
 
 export default function NewsDashboard() {
   const [dashboardState, setDashboardState] =
@@ -22,7 +22,13 @@ export default function NewsDashboard() {
     } catch {
       setDashboardState("error");
     } finally {
-      setDashboardState("results");
+      if (
+        newsResponse?.dataFreshnessIndicator == DataFreshnessIndicator.CACHED
+      ) {
+        setDashboardState("cached");
+      } else {
+        setDashboardState("results");
+      }
     }
   }
 
@@ -82,6 +88,7 @@ export default function NewsDashboard() {
       <DashboardContent
         dashboardState={dashboardState}
         newsItems={filteredAndSortedNewsItems}
+        alerts={newsResponse?.alerts ?? []}
       />
     </div>
   );

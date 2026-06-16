@@ -1,6 +1,5 @@
 import FilterPanel from "./FilterAndSortPanel";
 import SearchBar from "./SearchBar";
-import { Typography } from "@mui/material";
 import { SortByValues } from "../constants";
 
 type HeaderBarProps = {

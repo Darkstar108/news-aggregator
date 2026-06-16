@@ -106,5 +106,5 @@ export const mockNewsResponse: NewsResponse = {
         "Breaking News Alert"
     ],
     sourceDiversityScore: 0.85,
-    degraded: false
+    dataFreshnessIndicator: "LIVE"
 };

@@ -4,14 +4,14 @@ export type DashboardState =
     | "results"
     | "empty"
     | "error"
-    | "degraded";
+    | "cached";
 
 export interface NewsResponse {
     newsItems: NewsItem[],
     sourceList: string[],
-    alerts?: string[],
-    sourceDiversityScore?: number
-    dataFreshnessIndicator?: boolean
+    alerts: string[],
+    sourceDiversityScore: number
+    dataFreshnessIndicator: string
 }
 
 export interface NewsItem {
