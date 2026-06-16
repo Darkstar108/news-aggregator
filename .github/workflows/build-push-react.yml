@@ -15,7 +15,7 @@ on:
       - 'news-aggregator-app/**'
 env:
   ACR_LOGIN_SERVER: 'newsaggregator.azurecr.io'
-  IMAGE_NAME: 'news-aggregator-microservice' 
+  IMAGE_NAME: 'news-aggregator-app' 
 
 jobs:
   build-and-push:
