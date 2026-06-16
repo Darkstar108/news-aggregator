@@ -11,6 +11,8 @@ name: Build Java Microservice and push to ACR
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'news-aggregator-microservice/**'
 env:
   ACR_LOGIN_SERVER: 'newsaggregator.azurecr.io'
   IMAGE_NAME: 'news-aggregator-microservice' 
@@ -43,7 +45,7 @@ jobs:
         cache: maven
         
     - name: Build with Maven
-      run: mvn clean package -DskipTests
+      run: mvn clean package -f ./news-aggregator-microservice/pom.xml -DskipTests
         
     - name: Build and push Docker image
       id: push
