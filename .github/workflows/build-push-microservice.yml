@@ -9,6 +9,7 @@
 name: Build Java Microservice and push to ACR
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
     paths:
