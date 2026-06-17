@@ -42,11 +42,7 @@ export default function DashboardContent({
       )}
 
       {(dashboardState === "results" || dashboardState === "cached") && (
-        <ResultsPanel
-          dashboardState={dashboardState}
-          newsItems={newsItems}
-          alerts={alerts}
-        />
+        <ResultsPanel newsItems={newsItems} alerts={alerts} />
       )}
     </div>
   );

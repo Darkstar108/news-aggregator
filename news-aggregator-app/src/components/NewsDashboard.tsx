@@ -18,17 +18,28 @@ export default function NewsDashboard() {
     setDashboardState("loading");
     try {
       const response = await fetchNews(query);
-      setNewsResponse(response);
-    } catch {
-      setDashboardState("error");
-    } finally {
-      if (
-        newsResponse?.dataFreshnessIndicator == DataFreshnessIndicator.CACHED
-      ) {
-        setDashboardState("cached");
-      } else {
-        setDashboardState("results");
+      if (response == null) {
+        console.error("NewsResponse is null");
+        setDashboardState("error");
+        return;
       }
+      console.log(
+        "Fetched NewsResponse with dataFreshnessIndicator: %s and newsItems: %s",
+        response.dataFreshnessIndicator,
+        response.newsItems.length,
+      );
+      if (response?.dataFreshnessIndicator == DataFreshnessIndicator.CACHED) {
+        setDashboardState("cached");
+        response.alerts.push("Returning cached results from recent query");
+      } else {
+        response.newsItems.length > 0
+          ? setDashboardState("results")
+          : setDashboardState("empty");
+      }
+      setNewsResponse(response);
+    } catch (error) {
+      console.error(error);
+      setDashboardState("error");
     }
   }
 
