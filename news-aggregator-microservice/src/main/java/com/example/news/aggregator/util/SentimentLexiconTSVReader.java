@@ -1,5 +1,6 @@
 package com.example.news.aggregator.util;
 
+import com.example.news.aggregator.exception.ServerException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,7 @@ public class SentimentLexiconTSVReader {
       TSVReader.close();
     } catch (Exception e) {
       log.atError().setCause(e).log("Error reading SentimentLexiconTSVFile");
-      throw new RuntimeException(e);
+      throw new ServerException(e.getMessage());
     }
     return sentimentLexiconMap;
   }

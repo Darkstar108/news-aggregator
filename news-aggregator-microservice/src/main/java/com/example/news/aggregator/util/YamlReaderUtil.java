@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import com.example.news.aggregator.exception.ServerException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +29,7 @@ public class YamlReaderUtil {
             return yaml.load(inputStream);
         } catch (Exception e) {
             log.atError().setCause(e).log("Error reading SourceCredibility yaml");
-            throw new RuntimeException(e);
+            throw new ServerException(e.getMessage());
         }
     }
 }
