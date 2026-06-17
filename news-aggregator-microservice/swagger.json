@@ -1,0 +1,162 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "OpenAPI definition",
+        "version": "v0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:9081",
+            "description": "Generated server url"
+        }
+    ],
+    "paths": {
+        "/fetch-news": {
+            "get": {
+                "tags": [
+                    "news-aggregator-controller"
+                ],
+                "description": "Fetch news articles with sentiment and source credibility indicators",
+                "operationId": "fetchNews",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "Query to fetch news articles for",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 50,
+                            "minLength": 2
+                        },
+                        "example": "AI"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NewsAggregatorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "NewsAggregatorResponse": {
+                "type": "object",
+                "properties": {
+                    "newsItems": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/NewsItem"
+                        }
+                    },
+                    "sourceList": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "alerts": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "sourceDiversityScore": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Source Diversity score",
+                        "example": 0.0
+                    },
+                    "dataFreshnessIndicator": {
+                        "type": "string",
+                        "enum": [
+                            "LIVE",
+                            "CACHED",
+                            "MOCKED"
+                        ]
+                    }
+                }
+            },
+            "NewsItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "UUID",
+                        "example": "1920613e-60fc-469d-98f2-0c9f0d24213b"
+                    },
+                    "source": {
+                        "type": "string",
+                        "description": "Source of article",
+                        "example": "The Verge"
+                    },
+                    "author": {
+                        "type": "string",
+                        "description": "Name of author",
+                        "example": "John Doe"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Title of article",
+                        "example": "Title"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of article",
+                        "example": "Description"
+                    },
+                    "url": {
+                        "type": "string",
+                        "description": "Url to article",
+                        "example": "http://website.com"
+                    },
+                    "urlToImage": {
+                        "type": "string",
+                        "description": "Url to image in the article",
+                        "example": "http://website.com/image.jpg"
+                    },
+                    "publishedAt": {
+                        "type": "string",
+                        "description": "Article published at",
+                        "example": "2026-05-29T17:09:12Z"
+                    },
+                    "sentiment": {
+                        "type": "string",
+                        "description": "Sentiment of article",
+                        "enum": [
+                            "POSITIVE",
+                            "NEUTRAL",
+                            "NEGATIVE"
+                        ],
+                        "example": "POSITIVE"
+                    },
+                    "sentimentScore": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Sentiment score of article",
+                        "example": 5.0
+                    },
+                    "sourceCredibility": {
+                        "type": "string",
+                        "description": "Source credibility of article",
+                        "enum": [
+                            "HIGH",
+                            "MEDIUM",
+                            "LOW"
+                        ],
+                        "example": "HIGH"
+                    }
+                }
+            }
+        }
+    }
+}
