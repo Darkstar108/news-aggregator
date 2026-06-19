@@ -41,9 +41,10 @@ public class NewsAggregatorService {
     }
     var newsApiResponse = newsApiClient.fetchNews(query);
     log.atInfo().log(
-        "NewsApiClient: response fetched with status: {} and totalResults: {}",
+        "NewsApiClient: response fetched with status: {}, totalResults: {} and articles in response: {}",
         newsApiResponse.status,
-        newsApiResponse.totalResults);
+        newsApiResponse.totalResults,
+        newsApiResponse.articles.size());
     var newsAggregatorResponse =
         NewsAggregatorResponse.builder()
             .newsItems(
