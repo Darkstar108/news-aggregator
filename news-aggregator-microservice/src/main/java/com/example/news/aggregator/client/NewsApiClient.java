@@ -14,6 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Component
 @Slf4j
@@ -33,8 +34,8 @@ public class NewsApiClient {
             .build();
   }
 
-  public NewsApiResponse fetchNews(String query) {
-    log.atInfo().log("NewsApiClient: fetchNews called with query: {}", query);
+  public NewsApiResponse fetchNews(String query, Integer page) {
+    log.atInfo().log("NewsApiClient: fetchNews called with query: {} and page: {}", query, page);
     var response =
         this.webClient
             .get()
@@ -43,6 +44,7 @@ public class NewsApiClient {
                     uriBuilder
                         .path("/everything")
                         .queryParam("q", query)
+                            .queryParamIfPresent("page", Optional.of(page))
                         .queryParam("apiKey", newsApiKey)
                         .build())
             .retrieve()

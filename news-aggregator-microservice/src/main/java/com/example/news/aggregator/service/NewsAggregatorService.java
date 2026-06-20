@@ -1,12 +1,14 @@
 package com.example.news.aggregator.service;
 
 import com.example.news.aggregator.client.NewsApiClient;
+import com.example.news.aggregator.config.CacheClient;
 import com.example.news.aggregator.constant.Constants;
 import com.example.news.aggregator.constant.DataFreshnessIndicator;
 import com.example.news.aggregator.constant.Sentiment;
 import com.example.news.aggregator.mapper.NewsAggregatorResponseMapper;
 import com.example.news.aggregator.model.NewsAggregatorResponse;
 import com.example.news.aggregator.model.NewsItem;
+import com.example.news.aggregator.model.newsapi.NewsApiResponse;
 import com.example.news.aggregator.service.strategy.SentimentAnalysisStrategy;
 import com.example.news.aggregator.service.strategy.SourceCredibilityAnalysisStrategy;
 import com.example.news.aggregator.util.CommonUtils;
@@ -28,18 +30,20 @@ public class NewsAggregatorService {
   private final NewsApiClient newsApiClient;
   private final SentimentAnalysisStrategy sentimentAnalysisStrategy;
   private final SourceCredibilityAnalysisStrategy sourceCredibilityAnalysisStrategy;
-  private final CacheManager cacheManager;
+  private final CacheClient cacheClient;
   private final Map<String, Integer> sourceCounts = new HashMap<>();
 
-  public NewsAggregatorResponse fetchNews(String query) {
-    log.atInfo().log("Service: fetchNews called with query: {}", query);
-    var cachedResponse = fetchResponseFromCache(query);
+  public NewsAggregatorResponse fetchNews(String query, Integer page) {
+    log.atInfo().log("Service: fetchNews called with query: {} and page: {}", query, page);
+
+    var cachedResponse = cacheClient.fetchResponseFromCache(query, page);
     if (cachedResponse != null) {
       cachedResponse.setDataFreshnessIndicator(DataFreshnessIndicator.CACHED);
       log.atInfo().log("Service: fetchNews returned cachedResponse");
       return cachedResponse;
     }
-    var newsApiResponse = newsApiClient.fetchNews(query);
+
+    var newsApiResponse = newsApiClient.fetchNews(query, page);
     log.atInfo().log(
         "NewsApiClient: response fetched with status: {}, totalResults: {} and articles in response: {}",
         newsApiResponse.status,
@@ -73,7 +77,9 @@ public class NewsAggregatorService {
     newsAggregatorResponse.setSourceDiversityScore(analyseSourceDiversity(newsAggregatorResponse));
     setAlerts(
         newsAggregatorResponse, positiveArticlesCount, negativeArticlesCount, breakingNewsFlag);
-    setResponseInCache(query, newsAggregatorResponse);
+    newsAggregatorResponse.setNextPage(calculateNextPage(page, newsApiResponse));
+
+    cacheClient.setResponseInCache(query, page, newsAggregatorResponse);
     newsAggregatorResponse.setDataFreshnessIndicator(DataFreshnessIndicator.LIVE);
     return newsAggregatorResponse;
   }
@@ -81,21 +87,6 @@ public class NewsAggregatorService {
   private void analyseNewsItem(NewsItem newsItem) {
     sentimentAnalysisStrategy.analyse(newsItem);
     sourceCredibilityAnalysisStrategy.analyse(newsItem);
-  }
-
-  private NewsAggregatorResponse fetchResponseFromCache(String query) {
-    var cache = cacheManager.getCache(Constants.CACHE_NAME);
-    if (cache != null && cache.get(query) != null) {
-      return cache.get(query, NewsAggregatorResponse.class);
-    }
-    return null;
-  }
-
-  private void setResponseInCache(String query, NewsAggregatorResponse newsAggregatorResponse) {
-    var cache = cacheManager.getCache(Constants.CACHE_NAME);
-    if (cache != null) {
-      cache.put(query, newsAggregatorResponse);
-    }
   }
 
   // Use Shannon-Wiener Index: (H = -\sum p_{i} \ln(p_{i})\) to calculate diversity. Greater than
@@ -139,5 +130,12 @@ public class NewsAggregatorService {
       alerts.add(Constants.LIMITED_SOURCE_DIVERSITY_ALERT);
     }
     newsAggregatorResponse.setAlerts(alerts);
+  }
+
+  private Integer calculateNextPage(Integer currentPage, NewsApiResponse newsApiResponse) {
+    if (currentPage * 100 >= newsApiResponse.totalResults) {
+      return null;
+    }
+    return currentPage + 1;
   }
 }

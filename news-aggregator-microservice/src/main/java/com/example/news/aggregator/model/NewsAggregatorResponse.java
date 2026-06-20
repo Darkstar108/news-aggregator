@@ -22,5 +22,8 @@ public class NewsAggregatorResponse {
     public List<String> alerts;
     @Schema(description = "Source Diversity score", example = "0.0")
     public Double sourceDiversityScore;
+    @Schema(description = "Data freshness indicator", example = "LIVE")
     public DataFreshnessIndicator dataFreshnessIndicator;
+    @Schema(description = "Value of next page to fetch data. Null if all results fetched", example = "2")
+    public Integer nextPage;
 }
