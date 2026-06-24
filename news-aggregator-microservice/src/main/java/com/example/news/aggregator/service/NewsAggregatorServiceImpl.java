@@ -35,19 +35,19 @@ public class NewsAggregatorServiceImpl implements NewsAggregatorService {
   private final Map<String, Integer> sourceCounts = new HashMap<>();
 
   @Value("${breaking.news.hours:24}")
-  private final int breakingNewsHours;
+  private int breakingNewsHours;
 
   @Value("${negative.sentiment.threshold}")
-  private final double negativeSentimentThreshold;
+  private double negativeSentimentThreshold;
 
   @Value("${diverse.viewpoints.threshold}")
-  private final double diverseViewpointThreshold;
+  private double diverseViewpointThreshold;
 
   @Value("${limited.source.diversity.threshold}")
-  private final double limitedSourceDiversityThreshold;
+  private double limitedSourceDiversityThreshold;
 
   @Value("${news.api.page-size:100}")
-  private final int newsApiPageSize;
+  private int newsApiPageSize;
 
   public NewsAggregatorResponse fetchNews(String query, Integer page) {
     log.atInfo().log("Service: fetchNews called with query: {} and page: {}", query, page);

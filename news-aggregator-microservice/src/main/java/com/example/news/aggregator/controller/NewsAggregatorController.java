@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "${allowed.origins}")
 public class NewsAggregatorController {
   private final NewsAggregatorService newsAggregatorService;
 
