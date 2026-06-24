@@ -73,8 +73,19 @@ export default function HeaderBar({
             selected={offlineMode}
             onChange={handleOfflineModeChange}
             size="small"
+            color="primary"
+            sx={{
+              "&.Mui-selected": {
+                color: "black",
+                backgroundColor: "rgba(233,1,48,0.3)",
+              },
+
+              "&.Mui-selected:hover": {
+                backgroundColor: "rgba(233,1,48,0.5)",
+              },
+            }}
           >
-            <CheckIcon color="primary" />
+            <CheckIcon />
           </ToggleButton>
         </div>
       </div>
