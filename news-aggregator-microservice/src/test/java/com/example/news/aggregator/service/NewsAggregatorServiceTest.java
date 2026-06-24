@@ -8,15 +8,15 @@ import com.example.news.aggregator.model.newsapi.NewsApiResponse;
 import com.example.news.aggregator.model.newsapi.Source;
 import com.example.news.aggregator.service.strategy.SentimentAnalysisStrategy;
 import com.example.news.aggregator.service.strategy.SourceCredibilityAnalysisStrategy;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import com.example.news.aggregator.util.SourceDiversityUtil;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.cache.Cache;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,12 +29,21 @@ public class NewsAggregatorServiceTest {
   @InjectMocks private NewsAggregatorServiceImpl newsAggregatorService;
   @Mock private NewsApiClient newsApiClient;
   @Mock private CacheClient cacheClient;
-  @Mock private Cache cache;
+  @Spy private SourceDiversityUtil sourceDiversityUtil;
   @Spy private SentimentAnalysisStrategy sentimentAnalysisStrategy;
   @Spy private SourceCredibilityAnalysisStrategy sourceCredibilityAnalysisStrategy;
 
   private final String query = "news";
   private final Integer page = 1;
+
+  @BeforeEach
+  void setUp() {
+    ReflectionTestUtils.setField(newsAggregatorService, "breakingNewsHours", 24);
+    ReflectionTestUtils.setField(newsAggregatorService, "negativeSentimentThreshold", 0.6);
+    ReflectionTestUtils.setField(newsAggregatorService, "diverseViewpointThreshold", 0.3);
+    ReflectionTestUtils.setField(newsAggregatorService, "limitedSourceDiversityThreshold", 3.0);
+    ReflectionTestUtils.setField(newsAggregatorService, "newsApiPageSize", 100);
+  }
 
   @Test
   void shouldFetchNews_whenNewsAPIReturnsResponse() {
