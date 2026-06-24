@@ -19,6 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
   private static final String[] API_WHITELIST = {"/fetch-news"};
+  private static final String[] ACTUATOR_WHITELIST = {"/actuator/**"};
   private static final String[] SWAGGER_WHITELIST = {
     "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**"
   };
@@ -27,14 +28,17 @@ public class WebSecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
         .csrf(AbstractHttpConfigurer::disable)
-            .sessionManagement(session -> session
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            );
+        .sessionManagement(
+            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
     return http.build();
   }
 
   @Bean
   public WebSecurityCustomizer webSecurityCustomizer() {
-    return web -> web.ignoring().requestMatchers(API_WHITELIST).requestMatchers(SWAGGER_WHITELIST);
+    return web ->
+        web.ignoring()
+            .requestMatchers(API_WHITELIST)
+            .requestMatchers(ACTUATOR_WHITELIST)
+            .requestMatchers(SWAGGER_WHITELIST);
   }
 }

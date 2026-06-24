@@ -84,7 +84,7 @@ public class NewsAggregatorServiceImpl implements NewsAggregatorService {
       } else if (newsItem.sentiment == Sentiment.NEGATIVE) {
         negativeArticlesCount++;
       }
-      if (LocalDateTime.parse(newsItem.publishedAt.substring(0, 19))
+      if (LocalDateTime.parse(newsItem.publishedAt.substring(0, Constants.LOCAL_DATE_TIME_LENGTH))
           .isAfter(LocalDateTime.now().minusHours(breakingNewsHours))) {
         breakingNewsFlag = true;
       }
