@@ -27,6 +27,7 @@ export default function NewsDashboard() {
 
   async function handleSearch(query: string) {
     setDashboardState("loading");
+    handleReset();
     if (offlineMode) {
       setMockResponse();
       return;
