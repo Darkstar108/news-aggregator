@@ -41,7 +41,9 @@ export default function DashboardContent({
         />
       )}
 
-      {(dashboardState === "results" || dashboardState === "cached") && (
+      {(dashboardState === "results" ||
+        dashboardState === "cached" ||
+        dashboardState === "mocked") && (
         <ResultsPanel newsItems={newsItems} alerts={alerts} />
       )}
     </div>

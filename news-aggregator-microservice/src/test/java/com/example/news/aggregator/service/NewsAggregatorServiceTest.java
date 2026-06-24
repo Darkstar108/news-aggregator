@@ -1,6 +1,7 @@
 package com.example.news.aggregator.service;
 
 import com.example.news.aggregator.client.NewsApiClient;
+import com.example.news.aggregator.config.CacheClient;
 import com.example.news.aggregator.constant.Constants;
 import com.example.news.aggregator.model.newsapi.Article;
 import com.example.news.aggregator.model.newsapi.NewsApiResponse;
@@ -16,33 +17,62 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 
 @ExtendWith(MockitoExtension.class)
 public class NewsAggregatorServiceTest {
-  @InjectMocks private NewsAggregatorService newsAggregatorService;
+  @InjectMocks private NewsAggregatorServiceImpl newsAggregatorService;
   @Mock private NewsApiClient newsApiClient;
-  @Mock private CacheManager cacheManager;
+  @Mock private CacheClient cacheClient;
   @Mock private Cache cache;
   @Spy private SentimentAnalysisStrategy sentimentAnalysisStrategy;
   @Spy private SourceCredibilityAnalysisStrategy sourceCredibilityAnalysisStrategy;
 
+  private final String query = "news";
+  private final Integer page = 1;
+
   @Test
   void shouldFetchNews_whenNewsAPIReturnsResponse() {
     // Given
-    Mockito.when(newsApiClient.fetchNews(anyString())).thenReturn(getNewsApiResponse());
-    Mockito.when(cacheManager.getCache(Constants.CACHE_NAME)).thenReturn(cache);
-    Mockito.when(cache.get(anyString())).thenReturn(null);
+    Mockito.when(newsApiClient.fetchNews(anyString(), anyInt())).thenReturn(getNewsApiResponse());
+    Mockito.when(cacheClient.fetchResponseFromCache(anyString(), anyInt())).thenReturn(null);
     // When
-    var response = newsAggregatorService.fetchNews("news");
+    var response = newsAggregatorService.fetchNews(query, page);
     // Then
     Assertions.assertNotNull(response);
     Assertions.assertNotNull(response.newsItems.getFirst().id);
+  }
+
+  @Test
+  void shouldFetchNewsWithValidNextPageField_whenMoreResultsExist() {
+    // Given
+    Mockito.when(newsApiClient.fetchNews(anyString(), anyInt())).thenReturn(getNewsApiResponse());
+    Mockito.when(cacheClient.fetchResponseFromCache(anyString(), anyInt())).thenReturn(null);
+    // When
+    var response = newsAggregatorService.fetchNews(query, page);
+    // Then
+    Assertions.assertNotNull(response);
+    Assertions.assertNotNull(response.newsItems.getFirst().id);
+    Assertions.assertEquals(2, response.nextPage);
+  }
+
+  @Test
+  void shouldFetchNewsWithNullNextPageField_whenNoMoreResultsExist() {
+    // Given
+    Mockito.when(newsApiClient.fetchNews(anyString(), anyInt())).thenReturn(getNewsApiResponse());
+    Mockito.when(cacheClient.fetchResponseFromCache(anyString(), anyInt())).thenReturn(null);
+    var page = 5;
+    // When
+    var response = newsAggregatorService.fetchNews(query, page);
+    // Then
+    Assertions.assertNotNull(response);
+    Assertions.assertNotNull(response.newsItems.getFirst().id);
+    Assertions.assertNull(response.nextPage);
   }
 
   @Test
@@ -50,11 +80,10 @@ public class NewsAggregatorServiceTest {
     // Given
     var newsApiResponse = getNewsApiResponse();
     newsApiResponse.getArticles().getFirst().setPublishedAt(LocalDateTime.now().toString());
-    Mockito.when(newsApiClient.fetchNews(anyString())).thenReturn(newsApiResponse);
-    Mockito.when(cacheManager.getCache(Constants.CACHE_NAME)).thenReturn(cache);
-    Mockito.when(cache.get(anyString())).thenReturn(null);
+    Mockito.when(newsApiClient.fetchNews(anyString(), anyInt())).thenReturn(newsApiResponse);
+    Mockito.when(cacheClient.fetchResponseFromCache(anyString(), anyInt())).thenReturn(null);
     // When
-    var response = newsAggregatorService.fetchNews("news");
+    var response = newsAggregatorService.fetchNews(query, page);
     // Then
     Assertions.assertNotNull(response);
     Assertions.assertNotNull(response.newsItems.getFirst().id);
@@ -67,11 +96,10 @@ public class NewsAggregatorServiceTest {
     var newsApiResponse = getNewsApiResponse();
     newsApiResponse.getArticles().getFirst().setDescription("Bad product, horrible reviews");
     newsApiResponse.getArticles().getLast().setDescription("Unhappy with failed attempt");
-    Mockito.when(newsApiClient.fetchNews(anyString())).thenReturn(newsApiResponse);
-    Mockito.when(cacheManager.getCache(Constants.CACHE_NAME)).thenReturn(cache);
-    Mockito.when(cache.get(anyString())).thenReturn(null);
+    Mockito.when(newsApiClient.fetchNews(anyString(), anyInt())).thenReturn(newsApiResponse);
+    Mockito.when(cacheClient.fetchResponseFromCache(anyString(), anyInt())).thenReturn(null);
     // When
-    var response = newsAggregatorService.fetchNews("news");
+    var response = newsAggregatorService.fetchNews(query, page);
     // Then
     Assertions.assertNotNull(response);
     Assertions.assertNotNull(response.newsItems.getFirst().id);
@@ -84,11 +112,10 @@ public class NewsAggregatorServiceTest {
     var newsApiResponse = getNewsApiResponse();
     newsApiResponse.getArticles().getFirst().setDescription("Bad product, horrible reviews");
     newsApiResponse.getArticles().getLast().setDescription("Great product, amazing reviews");
-    Mockito.when(newsApiClient.fetchNews(anyString())).thenReturn(newsApiResponse);
-    Mockito.when(cacheManager.getCache(Constants.CACHE_NAME)).thenReturn(cache);
-    Mockito.when(cache.get(anyString())).thenReturn(null);
+    Mockito.when(newsApiClient.fetchNews(anyString(), anyInt())).thenReturn(newsApiResponse);
+    Mockito.when(cacheClient.fetchResponseFromCache(anyString(), anyInt())).thenReturn(null);
     // When
-    var response = newsAggregatorService.fetchNews("news");
+    var response = newsAggregatorService.fetchNews(query, page);
     // Then
     Assertions.assertNotNull(response);
     Assertions.assertNotNull(response.newsItems.getFirst().id);
@@ -99,11 +126,10 @@ public class NewsAggregatorServiceTest {
   void shouldFetchNewsWithLimitedSourceDiversityAlert_whenMostArticlesHaveSameSource() {
     // Given
     var newsApiResponse = getNewsApiResponse();
-    Mockito.when(newsApiClient.fetchNews(anyString())).thenReturn(newsApiResponse);
-    Mockito.when(cacheManager.getCache(Constants.CACHE_NAME)).thenReturn(cache);
-    Mockito.when(cache.get(anyString())).thenReturn(null);
+    Mockito.when(newsApiClient.fetchNews(anyString(), anyInt())).thenReturn(newsApiResponse);
+    Mockito.when(cacheClient.fetchResponseFromCache(anyString(), anyInt())).thenReturn(null);
     // When
-    var response = newsAggregatorService.fetchNews("news");
+    var response = newsAggregatorService.fetchNews(query, page);
     // Then
     Assertions.assertNotNull(response);
     Assertions.assertNotNull(response.newsItems.getFirst().id);
@@ -113,7 +139,7 @@ public class NewsAggregatorServiceTest {
   private NewsApiResponse getNewsApiResponse() {
     return NewsApiResponse.builder()
         .status("ok")
-        .totalResults(5)
+        .totalResults(500)
         .articles(
             List.of(
                 Article.builder()

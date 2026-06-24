@@ -30,8 +30,13 @@ html, body {
 
 .search-bar {
   margin: 10px 0px;
-  width: 80%;
+  width: 60%;
   padding: 0 10vw
+}
+
+.offline-mode-toggle {
+  display: flex;
+  width: 20%;
 }
 
 .filter-sort {
@@ -40,18 +45,23 @@ html, body {
   padding: 10px 10vw;
 }
 
-.filter {
+.filter-source {
   height: 80%;
-  width: 50%;
+  width: 40%;
+}
+
+.filter-sentiment-and-credibility {
+  width: 20%;
+  padding: 10px;
 }
 
 .sort {
-  width: 25%;
+  width: 20%;
   padding: 10px;
 }
 
 .reset-button {
-  width: 25%;
+  width: 20%;
 }
 
 .news-card {

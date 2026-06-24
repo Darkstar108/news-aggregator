@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "${allowed.origins}")
 public class NewsAggregatorController {
   private final NewsAggregatorService newsAggregatorService;
 
@@ -47,8 +47,11 @@ public class NewsAggregatorController {
           @Parameter(description = "Query to fetch news articles for", example = "AI")
           @NotBlank
           @Size(min = 2, max = 50)
-          String query) {
-    log.atInfo().log("Controller: fetchNews called with query: {}", query);
-    return ResponseEntity.ok().body(newsAggregatorService.fetchNews(query));
+          String query,
+      @RequestParam(name = "page", required = false, defaultValue = "1")
+      @Parameter(description = "Page of results", example = "1")
+      Integer page) {
+    log.atInfo().log("Controller: fetchNews called with query: {} and page: {}", query, page);
+    return ResponseEntity.ok().body(newsAggregatorService.fetchNews(query, page));
   }
 }

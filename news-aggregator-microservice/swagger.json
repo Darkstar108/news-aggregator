@@ -30,6 +30,18 @@
                             "minLength": 2
                         },
                         "example": "AI"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page of results",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 1
+                        },
+                        "example": 1
                     }
                 ],
                 "responses": {
@@ -78,11 +90,19 @@
                     },
                     "dataFreshnessIndicator": {
                         "type": "string",
+                        "description": "Data freshness indicator",
                         "enum": [
                             "LIVE",
                             "CACHED",
                             "MOCKED"
-                        ]
+                        ],
+                        "example": "LIVE"
+                    },
+                    "nextPage": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Value of next page to fetch data. Null if all results fetched",
+                        "example": 2
                     }
                 }
             },

@@ -2,6 +2,8 @@ export const WELCOME_MESSAGE = "Welcome to NewsAggregator, a small project that 
 export const EMPTY_RESULTS_MESSAGE = "No results found for your search query, please try again with a different query";
 export const ERROR_MESSAGE = "Sorry for the unexpected error, please try again later";
 export const SEARCH_HELPER_TEXT = "Search query must be at least 2 characters and at most 50 characters";
+export const CACHED_RESPONSE_ALERT = "Returning cached results from recent query";
+export const MOCKED_RESPONSE_ALERT = "Returning mocked results";
 
 const DataFreshnessIndicator = {
   LIVE: "LIVE",
@@ -28,12 +30,18 @@ type Sentiment = (typeof Sentiment)[keyof typeof Sentiment];
 export { Sentiment };
 
 const SortByValues = {
-    LATEST: "latest",
+  LATEST: "latest",
   OLDEST: "oldest",
-  POSITIVE: "positive",
-  NEGATIVE: "negative",
-  HIGH_CREDIBILITY: "high_credibility",
-  LOW_CREDIBILITY: "low_credibility"
 } as const;
 type SortByValues = (typeof SortByValues)[keyof typeof SortByValues];
 export { SortByValues };
+
+const FilterByValues = {
+  POSITIVE: Sentiment.POSITIVE,
+  NEGATIVE: Sentiment.NEGATIVE,
+  HIGH: SourceCredibility.HIGH,
+  MEDIUM: SourceCredibility.MEDIUM,
+  LOW: SourceCredibility.LOW
+} as const;
+type FilterByValues = (typeof FilterByValues)[keyof typeof FilterByValues];
+export { FilterByValues };

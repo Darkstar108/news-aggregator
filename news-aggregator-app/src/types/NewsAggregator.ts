@@ -4,7 +4,8 @@ export type DashboardState =
     | "results"
     | "empty"
     | "error"
-    | "cached";
+    | "cached"
+    | "mocked";
 
 export interface NewsResponse {
     newsItems: NewsItem[],

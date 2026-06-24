@@ -15,7 +15,7 @@ export default function SearchBar({ handleSearch }: SearchBarProps) {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       console.log("Submitted query:", query);
-      if (query.length < 2 || query.length > 50) {
+      if (query.length < 2 || query.length > 500) {
         setIsInvalidQueryFlag(true);
       } else {
         setIsInvalidQueryFlag(false);
