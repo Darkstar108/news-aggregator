@@ -37,13 +37,13 @@ public class NewsAggregatorServiceImpl implements NewsAggregatorService {
   @Value("${breaking.news.hours:24}")
   private int breakingNewsHours;
 
-  @Value("${negative.sentiment.threshold}")
+  @Value("${negative.sentiment.threshold:0.6}")
   private double negativeSentimentThreshold;
 
-  @Value("${diverse.viewpoints.threshold}")
+  @Value("${diverse.viewpoints.threshold:0.3}")
   private double diverseViewpointThreshold;
 
-  @Value("${limited.source.diversity.threshold}")
+  @Value("${limited.source.diversity.threshold:3.0}")
   private double limitedSourceDiversityThreshold;
 
   @Value("${news.api.page-size:100}")
@@ -84,7 +84,7 @@ public class NewsAggregatorServiceImpl implements NewsAggregatorService {
       } else if (newsItem.sentiment == Sentiment.NEGATIVE) {
         negativeArticlesCount++;
       }
-      if (LocalDateTime.parse(newsItem.publishedAt.substring(0, 19))
+      if (LocalDateTime.parse(newsItem.publishedAt.substring(0, Constants.LOCAL_DATE_TIME_LENGTH))
           .isAfter(LocalDateTime.now().minusHours(breakingNewsHours))) {
         breakingNewsFlag = true;
       }

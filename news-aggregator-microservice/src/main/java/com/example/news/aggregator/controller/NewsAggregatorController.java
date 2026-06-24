@@ -46,7 +46,7 @@ public class NewsAggregatorController {
       @RequestParam(name = "query")
           @Parameter(description = "Query to fetch news articles for", example = "AI")
           @NotBlank
-          @Size(min = 2, max = 50)
+          @Size(min = 2, max = 500)
           String query,
       @RequestParam(name = "page", required = false, defaultValue = "1")
       @Parameter(description = "Page of results", example = "1")
