@@ -17,7 +17,6 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +26,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 
 @ExtendWith(MockitoExtension.class)
 public class NewsAggregatorServiceTest {
-  @InjectMocks private NewsAggregatorService newsAggregatorService;
+  @InjectMocks private NewsAggregatorServiceImpl newsAggregatorService;
   @Mock private NewsApiClient newsApiClient;
   @Mock private CacheClient cacheClient;
   @Mock private Cache cache;
