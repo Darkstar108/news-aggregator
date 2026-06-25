@@ -13,4 +13,5 @@ public class Constants {
     public static final String DIVERSE_VIEWPOINTS_ALERT = "Diverse viewpoints available - Read multiple perspectives";
 
     public static final int LOCAL_DATE_TIME_LENGTH = 19;
+    public static final String CORRELATION_ID_HEADER = "X-Correlation-Id";
 }
