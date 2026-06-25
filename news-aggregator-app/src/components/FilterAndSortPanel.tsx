@@ -73,8 +73,13 @@ export default function FilterAndSortPanel({
           <MenuItem value="" disabled style={{ display: "none" }}>
             Select Filter
           </MenuItem>
-          <MenuItem value={FilterByValues.POSITIVE}>Positive</MenuItem>
-          <MenuItem value={FilterByValues.NEGATIVE}>Negative</MenuItem>
+          <MenuItem value={FilterByValues.POSITIVE}>
+            Positive Sentiment
+          </MenuItem>
+          <MenuItem value={FilterByValues.NEUTRAL}>Neutral Sentiment</MenuItem>
+          <MenuItem value={FilterByValues.NEGATIVE}>
+            Negative Sentiment
+          </MenuItem>
           <MenuItem value={FilterByValues.HIGH}>High Credibility</MenuItem>
           <MenuItem value={FilterByValues.MEDIUM}>Medium Credibility</MenuItem>
           <MenuItem value={FilterByValues.LOW}>Low Credibility</MenuItem>

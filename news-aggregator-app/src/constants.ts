@@ -38,6 +38,7 @@ export { SortByValues };
 
 const FilterByValues = {
   POSITIVE: Sentiment.POSITIVE,
+  NEUTRAL: Sentiment.NEUTRAL,
   NEGATIVE: Sentiment.NEGATIVE,
   HIGH: SourceCredibility.HIGH,
   MEDIUM: SourceCredibility.MEDIUM,
