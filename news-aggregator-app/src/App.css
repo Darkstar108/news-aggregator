@@ -91,6 +91,15 @@ html, body {
   text-align: left;
 }
 
+.news-card .MuiTypography-h6 {
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.news-card-chip-container .MuiTypography-buttom {
+  text-align: center;
+}
+
 .dashboard-content {
   background: var(--bg);
   margin: 1% 5% 0%;
@@ -99,6 +108,14 @@ html, body {
 .information-panel img {
   width: 20vw;
   object-fit: cover;
+}
+
+.information-panel p {
+  max-width: 60%;
+  margin: auto;
+  @media (max-width: 900px) {
+    max-width: 90%;
+  }
 }
 
 #search-bar-textfield-helper-text {

@@ -24,11 +24,14 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1200px) {
     font-size: 1rem;
   }
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     font-size: 0.9rem;
+  }
+  @media (max-width: 600px) {
+    font-size: 0.85rem;
   }
 }
 
@@ -55,11 +58,15 @@ h2 {
 }
 
 h1 {
-  font-size: 56px;
+  font-size: 3rem;
   letter-spacing: -1.68px;
   margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
+  @media (max-width: 1200px) {
+    font-size: 2.5rem;
+    margin: 20px 0;
+  }
+  @media (max-width: 900px) {
+    font-size: 2rem;
     margin: 20px 0;
   }
 }
@@ -68,8 +75,11 @@ h2 {
   line-height: 118%;
   letter-spacing: -0.24px;
   margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 1rem;
+  @media (max-width: 1350px) {
+    font-size: 1.35rem;
+  }
+  @media (max-width: 1200px) {
+    font-size: 1.25rem;
   }
 }
 p {
