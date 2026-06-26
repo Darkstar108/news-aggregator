@@ -63,7 +63,10 @@ export default function HeaderBar({
         <div className="offline-mode-toggle">
           <Typography
             variant="body2"
-            sx={{ color: "text.primary", padding: "1vw 1vw" }}
+            sx={{
+              color: "text.primary",
+              padding: "1vw 1vw",
+            }}
           >
             Offline Mode
           </Typography>
@@ -82,6 +85,14 @@ export default function HeaderBar({
 
               "&.Mui-selected:hover": {
                 backgroundColor: "rgba(233,1,48,0.5)",
+              },
+              maxWidth: "50px",
+              width: {
+                md: "8vw",
+              },
+              height: {
+                xs: "40px",
+                md: "50px",
               },
             }}
           >

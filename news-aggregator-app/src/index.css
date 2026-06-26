@@ -25,7 +25,10 @@
   -moz-osx-font-smoothing: grayscale;
 
   @media (max-width: 1024px) {
-    font-size: 16px;
+    font-size: 1rem;
+  }
+  @media (max-width: 600px) {
+    font-size: 0.9rem;
   }
 }
 
@@ -61,12 +64,12 @@ h1 {
   }
 }
 h2 {
-  font-size: 24px;
+  font-size: 1.5rem;
   line-height: 118%;
   letter-spacing: -0.24px;
   margin: 0 0 8px;
   @media (max-width: 1024px) {
-    font-size: 20px;
+    font-size: 1rem;
   }
 }
 p {
