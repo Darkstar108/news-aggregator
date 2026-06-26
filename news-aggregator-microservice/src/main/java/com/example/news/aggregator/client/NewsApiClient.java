@@ -8,6 +8,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -34,6 +36,13 @@ public class NewsApiClient {
             .build();
   }
 
+  @Retryable(
+      retryFor = ClientException.class,
+      maxAttemptsExpression = "${retry.maxAttempts}",
+      backoff =
+          @Backoff(
+              delayExpression = "${retry.delay}",
+              multiplierExpression = "${retry.multiplier}"))
   public NewsApiResponse fetchNews(String query, Integer page) {
     log.atInfo().log("NewsApiClient: fetchNews called with query: {} and page: {}", query, page);
     var response =
@@ -44,7 +53,7 @@ public class NewsApiClient {
                     uriBuilder
                         .path("/everything")
                         .queryParam("q", query)
-                            .queryParamIfPresent("page", Optional.of(page))
+                        .queryParamIfPresent("page", Optional.of(page))
                         .queryParam("apiKey", newsApiKey)
                         .build())
             .retrieve()
