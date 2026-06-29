@@ -123,6 +123,12 @@ export default function NewsDashboard() {
         );
         break;
 
+      case FilterByValues.NEUTRAL:
+        filteredAndSortedNewsItems = filteredAndSortedNewsItems.filter(
+          (newsItem) => newsItem.sentiment == FilterByValues.NEUTRAL,
+        );
+        break;
+
       case FilterByValues.NEGATIVE:
         filteredAndSortedNewsItems = filteredAndSortedNewsItems.filter(
           (newsItem) => newsItem.sentiment == FilterByValues.NEGATIVE,

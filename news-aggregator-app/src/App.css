@@ -17,32 +17,55 @@ html, body {
   padding-top: 10px;
 }
 
+@media (max-width: 600px) {
+  .title-search {
+    padding: 10px 10px;
+  }
+  .title {
+    padding: 0 2vw;
+  }
+}
+
+@media (min-width: 600px) {
+  .title-search {
+    padding: 10px 20px;
+  }
+  .title {
+    padding: 0 4vw;
+  }
+}
+
 .title-search {
   display: flex;
-  padding: 10px 20px;
   height: 50px;
 }
 
 .title {
   width: 20%;
-  padding: 0 4vw;
 }
 
 .search-bar {
   margin: 10px 0px;
-  width: 60%;
-  padding: 0 10vw
+  width: 50%;
+  padding: 0 5vw
 }
 
 .offline-mode-toggle {
   display: flex;
-  width: 20%;
+  width: 30%;
+  justify-content: center;
 }
 
 .filter-sort {
   display: flex;
   justify-content: space-between;
   padding: 10px 10vw;
+  @media (max-width: 900px) {
+    padding: 10px 5vw;
+  }
+  @media (max-width: 600px) {
+    padding: 10px 5px;
+  }
 }
 
 .filter-source {
@@ -68,6 +91,15 @@ html, body {
   text-align: left;
 }
 
+.news-card .MuiTypography-h6 {
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.news-card-chip-container .MuiTypography-buttom {
+  text-align: center;
+}
+
 .dashboard-content {
   background: var(--bg);
   margin: 1% 5% 0%;
@@ -76,6 +108,14 @@ html, body {
 .information-panel img {
   width: 20vw;
   object-fit: cover;
+}
+
+.information-panel p {
+  max-width: 60%;
+  margin: auto;
+  @media (max-width: 900px) {
+    max-width: 90%;
+  }
 }
 
 #search-bar-textfield-helper-text {

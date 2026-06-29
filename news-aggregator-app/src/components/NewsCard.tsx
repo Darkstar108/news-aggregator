@@ -72,7 +72,7 @@ export default function NewsCard({ newsItem }: NewsCardProps) {
         >
           <Typography
             gutterBottom
-            variant="h5"
+            variant="h6"
             component="div"
             sx={{ margin: "0px" }}
           >
